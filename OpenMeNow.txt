@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine?</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffdde1 0, #ff4b5c 45%, #b30024 100%);
+      color: #fff;
+    }
+
+    .card {
+      background: #ffffff;
+      color: #b30024;
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 900px;
+      width: 95%;
+      display: flex;
+      gap: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-container img {
+      width: 100%;
+      max-width: 350px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      object-fit: cover;
+    }
+
+    .content {
+      flex: 1.2;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      font-size: 60px;
+    }
+
+    .hearts span {
+      position: absolute;
+    }
+
+    .hearts span:nth-child(1) { top: 10%; left: 8%; }
+    .hearts span:nth-child(2) { top: 70%; left: 5%; }
+    .hearts span:nth-child(3) { top: 20%; right: 10%; }
+    .hearts span:nth-child(4) { bottom: 8%; right: 18%; }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      color: #d11b3a;
+    }
+
+    .capybaras {
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      white-space: pre;
+      color: #b30024;
+      font-weight: bold;
+    }
+
+    .buttons {
+      position: relative;
+      margin-top: 10px;
+      height: 80px;
+      width: 100%;
+    }
+
+    button {
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+      z-index: 20;
+      position: absolute;
+    }
+
+    #yesBtn {
+      background: #ff4b5c;
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(255, 75, 92, 0.45);
+      left: 20%;
+      top: 20px;
+    }
+
+    #yesBtn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(255, 75, 92, 0.6);
+      background: #ff1f3c;
+    }
+
+    #noBtn {
+      background: #ffffff;
+      color: #ff4b5c;
+      border: 2px solid #ff4b5c;
+      left: 60%;
+      top: 20px;
+    }
+
+    .message {
+      margin-top: 22px;
+      font-weight: 600;
+      color: #b30024;
+      min-height: 1.2em;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: red;
+      opacity: 0.9;
+      border-radius: 2px;
+      pointer-events: none;
+      animation: fall 1.2s linear forwards;
+      z-index: 5;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(250px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .card {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <div class="photo-container">
+      <img src="numabar.jpg" alt="You and Ananya">
+    </div>
+
+    <div class="content">
+      <div class="hearts">
+        <span>❤️</span>
+        <span>💖</span>
+        <span>💘</span>
+        <span>❤️</span>
+      </div>
+
+      <div class="capybaras">
+        (\__/)   (\__/)
+        ( •ㅅ•)  (•ㅅ• )
+        / 　 づ  づ　　\
+        CAPYBARA SQUAD APPROVES ❤️
+      </div>
+
+      <h1>miss tyagi, will you be my valentine</h1>
+      <p class="subtitle">because you're my favourite person</p>
+
+      <div class="buttons">
+        <button id="yesBtn">Yes 💌</button>
+        <button id="noBtn">No 🙈</button>
+      </div>
+
+      <div class="message" id="message"></div>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const message = document.getElementById("message");
+    const buttons = document.querySelector(".buttons");
+    const card = document.querySelector(".card");
+
+    function moveNoButton() {
+      const maxX = buttons.clientWidth - noBtn.offsetWidth;
+      const maxY = buttons.clientHeight - noBtn.offsetHeight;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("mousemove", moveNoButton);
+
+    function explodeConfetti(x, y) {
+      for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+
+        const colors = ["#ff4b5c", "#ffdde1", "#b30024", "#ff7a8a", "#ffffff"];
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        confetti.style.left = x + (Math.random() * 40 - 20) + "px";
+        confetti.style.top = y + (Math.random() * 20 - 10) + "px";
+
+        card.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 1200);
+      }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      const rect = yesBtn.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const x = rect.left + rect.width / 2 - cardRect.left;
+      const y = rect.top + rect.height / 2 - cardRect.top;
+
+      explodeConfetti(x, y);
+
+      message.textContent = "GOOD JOBBB WE GONNA HAVE YUMMY FOOD NOWWW❤️🐹";
+    });
+  </script>
+</body>
+</html>
